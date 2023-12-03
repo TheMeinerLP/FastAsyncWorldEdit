@@ -20,6 +20,7 @@
 package com.sk89q.worldedit.bukkit.adapter.ext.fawe.v1_20_R2;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.adapter.ext.fawe.v1_20_R1.PaperweightAdapter;
 import com.sk89q.worldedit.internal.block.BlockStateIdAccess;
 import com.sk89q.worldedit.internal.wna.WorldNativeAccess;
 import com.sk89q.worldedit.util.SideEffect;
@@ -38,6 +39,8 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 import javax.annotation.Nullable;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 
 public class PaperweightWorldNativeAccess implements WorldNativeAccess<LevelChunk, net.minecraft.world.level.block.state.BlockState, BlockPos> {
     private static final int UPDATE = 1;
@@ -45,12 +48,40 @@ public class PaperweightWorldNativeAccess implements WorldNativeAccess<LevelChun
 
     private final PaperweightAdapter adapter;
     private final WeakReference<ServerLevel> world;
+    private final MethodHandle globalTickData;
+    private final Class<?> regionScheduleHandleClass;
+    private final Class<?> regionizedServerClass;
+    private final MethodHandle globalCurrentTick;
     private SideEffectSet sideEffectSet;
 
     public PaperweightWorldNativeAccess(PaperweightAdapter adapter, WeakReference<ServerLevel> world) {
         this.adapter = adapter;
         this.world = world;
+        PaperweightAdapter adapter = (PaperweightAdapter) paperweightFaweAdapter.getParent();
+        if (adapter.isFolia()) {
+            try {
+                regionizedServerClass = Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+                regionScheduleHandleClass = Class.forName(
+                        "io.papermc.paper.threadedregions.TickRegionScheduler$RegionScheduleHandle");
+                globalTickData = MethodHandles.lookup().unreflect(regionizedServerClass.getDeclaredMethod("getGlobalTickData"));
+                var data = globalTickData.invoke();
+                globalCurrentTick = MethodHandles.lookup().unreflect(regionScheduleHandleClass.getDeclaredMethod(
+                        "getCurrentTick"));
+                final long tick = (long) globalCurrentTick.invoke(data);
+                this.lastTick = new AtomicInteger((int) tick);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+
+        } else {
+            this.globalTickData = null;
+            this.regionScheduleHandleClass = null;
+            this.regionizedServerClass = null;
+            this.globalCurrentTick = null;
+            this.lastTick = new AtomicInteger(MinecraftServer.currentTick);
+        }
     }
+
 
     private ServerLevel getWorld() {
         return Objects.requireNonNull(world.get(), "The reference to the world was lost");
