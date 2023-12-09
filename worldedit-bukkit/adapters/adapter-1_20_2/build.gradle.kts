@@ -12,6 +12,6 @@ repositories {
 
 dependencies {
     // https://repo.papermc.io/service/rest/repository/browse/maven-public/io/papermc/paper/dev-bundle/
-    the<PaperweightUserDependenciesExtension>().FoliaDevBundle("1.20.2-R0.1-SNAPSHOT")
+    the<PaperweightUserDependenciesExtension>().foliaDevBundle("1.20.2-R0.1-SNAPSHOT")
     compileOnly(libs.paperlib)
 }
