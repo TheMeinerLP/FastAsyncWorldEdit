@@ -778,55 +778,6 @@ public class UtilityCommands {
         }
     }
 
-//    @Command(
-//            name = "/hollowr",
-//            desc = "Hollow out a space recursively with a pattern"
-//    )
-//    @CommandPermissions("worldedit.hollowr")
-//    @Logging(PLACEMENT)
-//    public int hollowr(
-//            Actor actor,
-//            LocalSession session,
-//            EditSession editSession,
-//            @Arg(desc = "The radius to hollow out") Expression radiusExp,
-//            @ArgFlag(name = 'p', desc = "The blocks to fill with") Pattern pattern,
-//            @ArgFlag(name = 'm', desc = "The blocks remove", def = "") Mask mask
-//    ) throws WorldEditException {
-//        //FAWE start
-//        double radius = radiusExp.evaluate();
-//        //FAWE end
-//        radius = Math.max(1, radius);
-//        we.checkMaxRadius(radius);
-//        if (mask == null) {
-//            Mask mask = new MaskIntersection(
-//                    new RegionMask(new EllipsoidRegion(null, origin, Vector3.at(radius, radius, radius))),
-//                    new BoundedHeightMask(
-//                            Math.max(lowerBound, minY),
-//                            Math.min(maxY, origin.getBlockY())
-//                    ),
-//                    Masks.negate(new ExistingBlockMask(this))
-//            );
-//        }
-//
-//        // Want to replace blocks
-//        BlockReplace replace = new BlockReplace(this, pattern);
-//
-//        // Pick how we're going to visit blocks
-//        RecursiveVisitor visitor;
-//        //FAWE start - provide extent for preloading, min/max y
-//        if (recursive) {
-//            visitor = new RecursiveVisitor(mask, replace, (int) (radius * 2 + 1), minY, maxY, this);
-//        } else {
-//            visitor = new DownwardVisitor(mask, replace, origin.getBlockY(), (int) (radius * 2 + 1), minY, maxY, this);
-//        }
-//        //FAWE end
-//
-//        BlockVector3 pos = session.getPlacementPosition(actor);
-//        int affected = editSession.res(pos, pattern, radius, depth, true);
-//        actor.print(Caption.of("worldedit.fillr.created", TextComponent.of(affected)));
-//        return affected;
-//    }
-
     public static List<Map.Entry<URI, String>> filesToEntry(final File root, final List<File> files, final UUID uuid) {
         return files.stream()
                 .map(input -> { // Keep this functional, as transform is evaluated lazily
