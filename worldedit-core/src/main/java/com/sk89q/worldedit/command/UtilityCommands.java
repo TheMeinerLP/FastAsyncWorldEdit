@@ -124,16 +124,6 @@ public class UtilityCommands {
         this.we = we;
     }
 
-    // TODO: Reimplement
-    @Command(
-            name = "/macro",
-            desc = "Generate or run a macro"
-    )
-    @CommandPermissions("worldedit.macro")
-    public void macro(Actor actor) {
-        actor.print(TextComponent.of("This command is currently not implemented."));
-    }
-
     @Command(
             name = "/heightmapinterface",
             aliases = {"/hmi", "hmi"},
