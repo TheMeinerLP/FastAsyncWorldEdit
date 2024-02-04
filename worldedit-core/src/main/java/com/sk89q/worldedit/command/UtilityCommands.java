@@ -245,63 +245,6 @@ public class UtilityCommands {
         return affected;
     }
 
-/*
-
-    @Command(
-        name = "masks",
-        desc = "View help about masks",
-        descFooter = "Masks determine if a block can be placed\n" +
-            " - Use [brackets] for arguments\n" +
-            " - Use , to OR multiple\n" +
-            " - Use & to AND multiple\n" +
-            "e.g., >[stone,dirt],#light[0][5],$jungle\n" +
-            "More Info: https://git.io/v9r4K"
-    )
-    @CommandQueued(false)
-    @CommandPermissions("worldedit.masks")
-    public void masks(Player player, LocalSession session, InjectedValueAccess args) throws WorldEditException {
-        displayModifierHelp(player, DefaultMaskParser.class, args);
-    }
-
-    @Command(
-        name = "transforms",
-        desc = "View help about transforms",
-        descFooter = "Transforms modify how a block is placed\n" +
-            " - Use [brackets] for arguments\n" +
-            " - Use , to OR multiple\n" +
-            " - Use & to AND multiple\n" +
-            "More Info: https://git.io/v9KHO",
-    )
-    @CommandQueued(false)
-    @CommandPermissions("worldedit.transforms")
-    public void transforms(Player player, LocalSession session, InjectedValueAccess args) throws WorldEditException {
-        displayModifierHelp(player, DefaultTransformParser.class, args);
-    }
-
-    private void displayModifierHelp(Player player, Class<? extends FaweParser> clazz, InjectedValueAccess args) {
-        FaweParser parser = FaweAPI.getParser(clazz);
-        if (args.argsLength() == 0) {
-            String base = getCommand().aliases()[0];
-            UsageMessage msg = new UsageMessage(getCallable(), "/" + base, args.getLocals());
-            msg.newline().paginate(base, 0, 1).send(player);
-            return;
-        }
-        if (parser != null) {
-            CommandMapping mapping = parser.getDispatcher().get(args.getString(0));
-            if (mapping != null) {
-                new UsageMessage(mapping.getCallable(), args.getString(0), args.getLocals()) {
-                    @Override
-                    public String separateArg(String arg) {
-                        return "&7[" + arg + "&7]";
-                    }
-                }.send(player);
-            } else {
-                UtilityCommands.help(args, player, getCommand().aliases()[0] + " ", parser.getDispatcher());
-            }
-        }
-    }
-*/
-
     @Command(
             name = "/fillr",
             desc = "Fill a hole recursively"
